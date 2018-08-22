@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { getMovies, deleteMovie } from "../services/fakeMovieService";
 import Like from './Like';
+import Pagination from './Pagination';
 
 export default class Movies extends Component {
     state = {
         movies: getMovies(),
+        pageLimit: 4,
+        currentPage: 1,
     }
     render() {
         return (
@@ -45,8 +48,18 @@ export default class Movies extends Component {
                         )}
                     </tbody>
                 </table>
+                <Pagination
+                    pageLimit={this.state.pageLimit}
+                    currentPage={this.state.currentPage}
+                    total={this.state.movies.length}
+                    onSelectePage={this.onSelectPageHandler}
+                />
             </div>
         )
+    }
+
+    onSelectPageHandler = (page) => {
+        this.setState({ currentPage: page })
     }
 
     renderRow = (items) => {
