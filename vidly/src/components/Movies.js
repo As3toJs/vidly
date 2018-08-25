@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { getMovies, deleteMovie } from "../services/fakeMovieService";
 import Like from './Like';
 import Pagination from './Pagination';
+import { paginate } from '../utils/paginate';
 
 export default class Movies extends Component {
     state = {
@@ -25,10 +26,13 @@ export default class Movies extends Component {
     }
 
     renderMovieTable = () => {
+        const { movies, currentPage, pageLimit } = this.state;
+        const { length: movieCount } = this.state.movies;
+        const moviesPerPage = paginate(movies, currentPage, pageLimit);
         return (
             <div>
                 <span>
-                    Showing {this.state.movies.length} movies in the database.
+                    Showing {movieCount} movies in the database.
                 </span>
                 <table className="table">
                     <thead>
@@ -42,16 +46,16 @@ export default class Movies extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.movies.map(movie => {
+                        {moviesPerPage.map(movie => {
                             return this.renderRow(movie)
                         }
                         )}
                     </tbody>
                 </table>
                 <Pagination
-                    pageLimit={this.state.pageLimit}
-                    currentPage={this.state.currentPage}
-                    total={this.state.movies.length}
+                    pageLimit={pageLimit}
+                    currentPage={currentPage}
+                    total={movies.length}
                     onSelectePage={this.onSelectPageHandler}
                 />
             </div>

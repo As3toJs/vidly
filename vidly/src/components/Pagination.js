@@ -4,9 +4,7 @@ import { range } from 'ramda';
 const Pagination = ({ pageLimit, currentPage, total, onSelectePage }) => {
     const pages = Math.ceil(total / pageLimit);
     if (pages === 1) return null;
-    const pageRange = range(1, pages);
-    console.log("range =>", pageRange.length);
-
+    const pageRange = range(1, (pages + 1));
     return (
         <nav>
             <ul className="pagination">
